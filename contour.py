@@ -64,9 +64,7 @@ def superpose_image_contour(im_num):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-
-def remove_noise(im_num):
-    list_matrices = np.load(path +'Saved/list_matrices.npy').astype(bool)
+def remove_noise(list_matrices, im_num):
     contour = np.load(path+'Saved/freq_min_18.npy')
     #contour = np.array(Image.open(path+'Images/Superposed_Pixels/freq_min_160.png'), )
     combined_arr = np.bitwise_and(list_matrices[im_num], contour)
@@ -79,6 +77,61 @@ def remove_noise(im_num):
     print(f"original image of {list_matrices[im_num].sum()} pixels, New image of {combined_arr.sum()} pixels, difference of {list_matrices[im_num].sum() - combined_arr.sum()} piels")
     return combined_arr
 
+def select_min_max_x(all_points):
+    points =  all_points
+    # create an empty dictionary to store the x and y values
+    points_dict = {}
+
+    # iterate over the list of points and add the x and y values to the dictionary
+    for x_i, y_i in points:
+        if x_i not in points_dict:
+            points_dict[x_i] = [y_i]
+        else:
+            points_dict[x_i].append(y_i)
+
+    new_points_x = []
+    for x_i in points_dict.keys():
+        points_dict[x_i] = min(points_dict[x_i]), max(points_dict[x_i])
+        for new_y_i in points_dict[x_i]:
+            new_points_x.append((x_i, new_y_i))
+    return new_points_x
+
+def select_min_max_y(all_points):
+    points =  all_points
+    # create an empty dictionary to store the x and y values
+    points_dict = {}
+
+    # iterate over the list of points and add the x and y values to the dictionary
+    for x_i, y_i in points:
+        if y_i not in points_dict:
+            points_dict[y_i] = [x_i]
+        else:
+            points_dict[y_i].append(x_i)
+
+    new_points_y = []
+    for y_i in points_dict.keys():
+        points_dict[y_i] = min(points_dict[y_i]), max(points_dict[y_i])
+        for new_x_i in points_dict[y_i]:
+            new_points_y.append((new_x_i, y_i))
+    return new_points_y
+
+def scatter_plot(coordinates):
+    x = np.array([coord[0] for coord in coordinates])
+    y = np.array([coord[1] for coord in coordinates])
+    trace = go.Scatter(x=x, y=y, mode='markers')
+    data = [trace]
+    # Define the layout of the plot
+    #layout = go.Layout(title='Scatter plot of coordinates')
+    # Create the plot and save it to an HTML file
+    fig = go.Figure(data=data)#, layout=layout)
+    pyo.plot(fig)
+
+def get_contour(im_array):
+    all_points = np.argwhere(im_array == True)
+    new_points_x = select_min_max_x(all_points)
+    new_points_y = select_min_max_y(all_points)
+    final_points = list(set().union(new_points_x, new_points_y))
+    return final_points
 
 def main_contour():
     contour = np.load(path +'Saved/contour_array.npy')
