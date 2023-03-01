@@ -5,7 +5,7 @@ from PIL import Image
 import cv2
 import matplotlib.pyplot as plt
 from scipy.interpolate import UnivariateSpline
-""""
+
 import os
 from numpy import asarray
 from PIL import  ImageEnhance
@@ -19,7 +19,7 @@ import sys
 from scipy.interpolate import interp2d
 #np.set_printoptions(threshold=sys.maxsize)
 import matplotlib.pyplot  as plt
-"""
+
 
 path = 'C:/Users/lubli/Documents/Thesis_Shoes/python_files/'
 w, h = 307, 395
