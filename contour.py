@@ -21,7 +21,7 @@ from scipy.interpolate import interp2d
 import matplotlib.pyplot  as plt
 
 
-path = 'C:/Users/lubli/Documents/Thesis_Shoes/python_files/'
+path = 'C:/Users/Chelomo/Desktop/These/Files_thesis/'
 w, h = 307, 395
 
 
@@ -191,6 +191,8 @@ def only_100_300(points_dict):
             for new_y_i in points_dict[x_i]:
                 new_points_x.append((x_i, new_y_i))
     return new_points_x
+
+
 
     """new_points_x = []
     for x_i in points_dict.keys():
